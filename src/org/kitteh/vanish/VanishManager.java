@@ -71,10 +71,10 @@ public class VanishManager {
     public boolean isVanished(String playerName) {
         final Player player = this.plugin.getServer().getPlayer(playerName);
         if (player != null) {
-            Debuggle.log("Testing vanished status of " + player.getName() + ": " + this.isVanished(player));
+            Debuggle.log(Messages.getString("VanishManager.TestingVanishedStatus") + player.getName() + ": " + this.isVanished(player));  
             return this.isVanished(player);
         }
-        Debuggle.log("Testing vanished status of " + playerName + ": null");
+        Debuggle.log(Messages.getString("VanishManager.TestingVanishedStatus") + playerName + ": null");  
         return false;
     }
 
@@ -93,7 +93,7 @@ public class VanishManager {
     }
 
     public void playerQuit(Player player) {
-        Debuggle.log("Quitting: " + player.getName());
+        Debuggle.log("Quitting: " + player.getName()); 
         this.resetSleepingIgnored(player);
         VanishPerms.userQuit(player);
         this.removeVanished(player.getName());
@@ -117,13 +117,13 @@ public class VanishManager {
      * @param player
      */
     public void resetSeeing(Player player) {
-        Debuggle.log("Resetting visibility on " + player.getName());
+        Debuggle.log(Messages.getString("VanishManager.ResettingVisbility") + player.getName()); 
         if (VanishPerms.canSeeAll(player)) {
             this.showVanished(player);
-            Debuggle.log("Showing all to " + player.getName());
+            Debuggle.log(Messages.getString("VanishManager.ShowingAllTo") + player.getName()); 
         } else {
             this.hideVanished(player);
-            Debuggle.log("Hiding all to " + player.getName());
+            Debuggle.log(Messages.getString("VanishManager.HidingAllTo") + player.getName()); 
         }
     }
 
@@ -173,20 +173,20 @@ public class VanishManager {
         this.toggleVanishQuiet(togglingPlayer);
         final String vanishingPlayerName = togglingPlayer.getName();
         String messageBit;
-        final String base = ChatColor.YELLOW + vanishingPlayerName + " has ";
+        final String base = ChatColor.YELLOW + vanishingPlayerName + Messages.getString("VanishManager.has"); 
         if (this.isVanished(togglingPlayer)) {
-            Debuggle.log("LoudVanishToggle Vanishing " + togglingPlayer.getName());
+            Debuggle.log(Messages.getString("VanishManager.LoudVanishToggleVanishing") + togglingPlayer.getName()); 
             this.plugin.hooksVanish(togglingPlayer);
-            messageBit = "vanished. Poof.";
+            messageBit = Messages.getString("VanishManager.vanishedPoof"); 
 
         } else {
-            Debuggle.log("LoudVanishToggle Revealing " + togglingPlayer.getName());
+            Debuggle.log(Messages.getString("VanishManager.LoudVanishToggleRevealing") + togglingPlayer.getName()); 
             this.plugin.hooksUnvanish(togglingPlayer);
-            messageBit = "become visible.";
+            messageBit = Messages.getString("VanishManager.becameVisible"); 
             this.announceManipulator.vanishToggled(togglingPlayer);
         }
         final String message = base + messageBit;
-        togglingPlayer.sendMessage(ChatColor.DARK_AQUA + "You have " + messageBit);
+        togglingPlayer.sendMessage(ChatColor.DARK_AQUA + Messages.getString("VanishManager.YouHave") + messageBit); 
         this.plugin.messageStatusUpdate(message, togglingPlayer);
     }
 
@@ -202,7 +202,7 @@ public class VanishManager {
         final String vanishingPlayerName = vanishingPlayer.getName();
         final CraftPlayer cplr = ((CraftPlayer) vanishingPlayer);
         if (vanishing) {
-            Debuggle.log("It's invisible time! " + vanishingPlayer.getName());
+            Debuggle.log(Messages.getString("VanishManager.ItsInvisibleTime") + vanishingPlayer.getName()); 
             this.setSleepingIgnored(vanishingPlayer);
             if (VanishPerms.canNotFollow(vanishingPlayer)) {
                 for (final Entity entity : vanishingPlayer.getNearbyEntities(100, 100, 100)) {
@@ -214,7 +214,7 @@ public class VanishManager {
                     }
                 }
             }
-            vanishingPlayer.addAttachment(this.plugin, "vanish.currentlyVanished", true);
+            vanishingPlayer.addAttachment(this.plugin, "vanish.currentlyVanished", true); 
             this.addVanished(vanishingPlayerName);
             if (VanishPerms.canSmoke(vanishingPlayer)) {
                 this.smokeScreenEffect(vanishingPlayer.getLocation());
@@ -224,11 +224,11 @@ public class VanishManager {
             }
             cplr.getHandle().netServerHandler.sendPacket(new Packet41MobEffect(cplr.getEntityId(), new MobEffect(MobEffectList.INVISIBILITY.getId(), 0, 0)));
             MetricsOverlord.vanish.increment();
-            this.plugin.log(vanishingPlayerName + " disappeared.");
+            this.plugin.log(vanishingPlayerName + Messages.getString("VanishManager.disappeared")); 
         } else {
-            Debuggle.log("It's visible time! " + vanishingPlayer.getName());
+            Debuggle.log(Messages.getString("VanishManager.ItsVisibleTime") + vanishingPlayer.getName()); 
             this.resetSleepingIgnored(vanishingPlayer);
-            vanishingPlayer.addAttachment(this.plugin, "vanish.currentlyVanished", false);
+            vanishingPlayer.addAttachment(this.plugin, "vanish.currentlyVanished", false); 
             this.removeVanished(vanishingPlayerName);
             if (VanishPerms.canSmoke(vanishingPlayer)) {
                 this.smokeScreenEffect(vanishingPlayer.getLocation());
@@ -238,7 +238,7 @@ public class VanishManager {
             }
             cplr.getHandle().netServerHandler.sendPacket(new Packet42RemoveMobEffect(cplr.getEntityId(), new MobEffect(MobEffectList.INVISIBILITY.getId(), 0, 0)));
             MetricsOverlord.unvanish.increment();
-            this.plugin.log(vanishingPlayerName + " reappeared.");
+            this.plugin.log(vanishingPlayerName + Messages.getString("VanishManager.reappeared")); 
         }
         this.plugin.getServer().getPluginManager().callEvent(new VanishStatusChangeEvent(vanishingPlayerName, vanishing));
         final Player[] playerList = this.plugin.getServer().getOnlinePlayers();
@@ -246,12 +246,12 @@ public class VanishManager {
             if (vanishingPlayer.equals(otherPlayer)) {
                 continue;
             }
-            Debuggle.log("Determining what to do about " + vanishingPlayer.getName() + " for " + otherPlayer.getName());
+            Debuggle.log("Determining what to do about " + vanishingPlayer.getName() + " for " + otherPlayer.getName());  
             if (vanishing && !VanishPerms.canSeeAll(otherPlayer) && otherPlayer.canSee(vanishingPlayer)) {
-                Debuggle.log("Hiding " + vanishingPlayer.getName() + " from " + otherPlayer.getName());
+                Debuggle.log("Hiding " + vanishingPlayer.getName() + " from " + otherPlayer.getName());  
                 otherPlayer.hidePlayer(vanishingPlayer);
             } else if ((!vanishing || VanishPerms.canSeeAll(otherPlayer)) && !otherPlayer.canSee(vanishingPlayer)) {
-                Debuggle.log("Showing " + vanishingPlayer.getName() + " to " + otherPlayer.getName());
+                Debuggle.log("Showing " + vanishingPlayer.getName() + " to " + otherPlayer.getName());  
                 otherPlayer.showPlayer(vanishingPlayer);
             }
 
