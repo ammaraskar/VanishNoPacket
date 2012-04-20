@@ -28,7 +28,7 @@ public class Settings {
             final File target = new File(VanishNoPacket.getPlugin().getDataFolder(), name);
             final InputStream source = VanishNoPacket.getPlugin().getResource(name);
             if (source == null) {
-                Bukkit.getServer().getLogger().log(Level.SEVERE, "Could not find default config " + name);
+                Bukkit.getServer().getLogger().log(Level.SEVERE, Messages.getString("Settings.CouldntFindDefault") + name); 
                 return;
             }
             if (!VanishNoPacket.getPlugin().getDataFolder().exists()) {
@@ -45,40 +45,40 @@ public class Settings {
             }
             source.close();
         } catch (final Exception ex) {
-            Bukkit.getServer().getLogger().log(Level.SEVERE, "Could not save default config to " + name, ex);
+            Bukkit.getServer().getLogger().log(Level.SEVERE, Messages.getString("Settings.CouldntSaveDefault") + name, ex); 
         }
     }
 
     public static void freshStart(VanishPlugin plugin) {
         final FileConfiguration config = plugin.getConfig();
         config.options().copyDefaults(true);
-        final int ver = config.getInt("configVersionDoNotTouch.SeriouslyThisWillEraseYourConfig", 0);
+        final int ver = config.getInt("configVersionDoNotTouch.SeriouslyThisWillEraseYourConfig", 0); 
         if (ver != Settings.confVersion) {
-            plugin.log("Attempting to update your configuration. Check to make sure it's ok");
+            plugin.log(Messages.getString("Settings.AttmeptingConfigUpdate")); 
             if (ver < 1) {
-                config.set("hooks.spoutcraft", config.getBoolean("spoutcraft.enable", true));
-                config.set("spoutcraft.enable", null);
-                config.set("spoutcraft", null);
+                config.set("hooks.spoutcraft", config.getBoolean("spoutcraft.enable", true));  
+                config.set("spoutcraft.enable", null); 
+                config.set("spoutcraft", null); 
             }
-            if ((ver <= 1) || config.contains("permtest.enable")) {
-                final boolean permtest = config.getBoolean("permtest.enable", false);
-                config.set("permtest.enable", null);
-                config.set("permtest", permtest);
-                config.set("enableColoration", null);
-                config.set("enableTabControl", null);
-                final boolean updates = config.getBoolean("updates.check", true);
-                config.set("updates.check", null);
-                config.set("checkupdates", updates);
+            if ((ver <= 1) || config.contains("permtest.enable")) { 
+                final boolean permtest = config.getBoolean("permtest.enable", false); 
+                config.set("permtest.enable", null); 
+                config.set("permtest", permtest); 
+                config.set("enableColoration", null); 
+                config.set("enableTabControl", null); 
+                final boolean updates = config.getBoolean("updates.check", true); 
+                config.set("updates.check", null); 
+                config.set("checkupdates", updates); 
             }
-            config.set("configVersionDoNotTouch.SeriouslyThisWillEraseYourConfig", Settings.confVersion);
+            config.set("configVersionDoNotTouch.SeriouslyThisWillEraseYourConfig", Settings.confVersion); 
             plugin.saveConfig();
         }
-        Settings.enablePermTest = config.getBoolean("permtest", false);
-        Settings.fakeJoin = config.getString("fakeannounce.join", "%p joined the game.").replace("&&", String.valueOf(ChatColor.COLOR_CHAR));
-        Settings.fakeQuit = config.getString("fakeannounce.quit", "%p left the game.").replace("&&", String.valueOf(ChatColor.COLOR_CHAR));
-        Settings.autoFakeJoinSilent = config.getBoolean("fakeannounce.automaticforsilentjoin", false);
-        Settings.worldChangeCheck = config.getBoolean("permissionsupdates.checkonworldchange", false);
-        if (config.getBoolean("debug", false)) {
+        Settings.enablePermTest = config.getBoolean("permtest", false); 
+        Settings.fakeJoin = config.getString("fakeannounce.join", "%p joined the game.").replace("&&", String.valueOf(ChatColor.COLOR_CHAR));   //$NON-NLS-3$
+        Settings.fakeQuit = config.getString("fakeannounce.quit", "%p left the game.").replace("&&", String.valueOf(ChatColor.COLOR_CHAR));   //$NON-NLS-3$
+        Settings.autoFakeJoinSilent = config.getBoolean("fakeannounce.automaticforsilentjoin", false); 
+        Settings.worldChangeCheck = config.getBoolean("permissionsupdates.checkonworldchange", false); 
+        if (config.getBoolean("debug", false)) { 
             Debuggle.itsGoTime();
         } else {
             Debuggle.nah();

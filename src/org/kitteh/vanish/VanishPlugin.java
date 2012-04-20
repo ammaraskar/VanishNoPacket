@@ -28,19 +28,19 @@ public class VanishPlugin extends JavaPlugin {
         @Override
         public void run() {
             try {
-                final String address = "http://updates.kitteh.org/VanishNoPacket/version.php?bukkit=" + this.plugin.getServer().getVersion() + "&version=" + this.plugin.getDescription().getVersion() + "&port=" + this.plugin.getServer().getPort();   //$NON-NLS-3$
-                final URL url = new URL(address.replace(" ", "%20"));  
+                final String address = "http://updates.kitteh.org/VanishNoPacket/version.php?bukkit=" + this.plugin.getServer().getVersion() + "&version=" + this.plugin.getDescription().getVersion() + "&port=" + this.plugin.getServer().getPort();
+                final URL url = new URL(address.replace(" ", "%20"));
                 final URLConnection connection = url.openConnection();
                 connection.setConnectTimeout(8000);
                 connection.setReadTimeout(15000);
-                connection.setRequestProperty("User-agent", "VanishNoPacket " + this.plugin.getDescription().getVersion());  
+                connection.setRequestProperty("User-agent", "VanishNoPacket " + this.plugin.getDescription().getVersion());
                 final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String version;
                 if ((version = bufferedReader.readLine()) != null) {
                     this.plugin.latestVersion = version;
                     if (!this.plugin.getDescription().getVersion().equals(version)) {
-                        this.plugin.log(Messages.getString("VanishPlugin.DifferentVersion") + version); 
-                        this.plugin.log(Messages.getString("VanishPlugin.CheckDBO")); 
+                        this.plugin.log(Messages.getString("VanishPlugin.DifferentVersion") + version);
+                        this.plugin.log(Messages.getString("VanishPlugin.CheckDBO"));
                         this.plugin.versionDiff = true;
                     }
                     bufferedReader.close();
@@ -52,7 +52,7 @@ public class VanishPlugin extends JavaPlugin {
                 }
             } catch (final Exception e) {
             }
-            this.plugin.log(Messages.getString("VanishPlugin.UnableToCheckUpToDateError")); 
+            this.plugin.log(Messages.getString("VanishPlugin.UnableToCheckUpToDateError"));
         }
 
     }
@@ -118,7 +118,7 @@ public class VanishPlugin extends JavaPlugin {
     }
 
     public void hooksJoin(Player player) {
-        if (player.hasPermission("vanish.hooks.dynmap.alwayshidden")) { 
+        if (player.hasPermission("vanish.hooks.dynmap.alwayshidden")) {
             this.dynmapHook.vanish(player);
         }
     }
@@ -199,7 +199,7 @@ public class VanishPlugin extends JavaPlugin {
         this.manager.onPluginDisable();
         this.getServer().getScheduler().cancelTasks(this);
         Debuggle.nah();
-        this.log("v" + this.getDescription().getVersion() + Messages.getString("VanishPlugin.unloaded"));  
+        this.log("v" + this.getDescription().getVersion() + Messages.getString("VanishPlugin.unloaded"));
     }
 
     @Override
@@ -207,7 +207,7 @@ public class VanishPlugin extends JavaPlugin {
 
         VanishNoPacket.setInstance(this);
 
-        final File check = new File("plugins/VanishNoPacket/config.yml"); 
+        final File check = new File("plugins/VanishNoPacket/config.yml");
         boolean firstTimeStarting = false;
         if (!check.exists()) {
             firstTimeStarting = true;
@@ -218,36 +218,36 @@ public class VanishPlugin extends JavaPlugin {
         Settings.freshStart(this);
         MetricsOverlord.init(this);
 
-        this.essentialsHook.onPluginEnable(this.getConfig().getBoolean("hooks.essentials", false)); 
+        this.essentialsHook.onPluginEnable(this.getConfig().getBoolean("hooks.essentials", false));
 
-        this.dynmapHook.onPluginEnable(this.getConfig().getBoolean("hooks.dynmap", false)); 
+        this.dynmapHook.onPluginEnable(this.getConfig().getBoolean("hooks.dynmap", false));
 
         //Post-load stuff
         this.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
             @Override
             public void run() {
-                VanishPlugin.this.jsonapiHook.onPluginEnable(VanishPlugin.this.getConfig().getBoolean("hooks.JSONAPI", false)); 
+                VanishPlugin.this.jsonapiHook.onPluginEnable(VanishPlugin.this.getConfig().getBoolean("hooks.JSONAPI", false));
                 for (final Player player : VanishPlugin.this.getServer().getOnlinePlayers()) {
                     if ((player != null) && VanishPerms.canVanish(player)) {
-                        player.sendMessage(ChatColor.DARK_AQUA + Messages.getString("VanishPlugin.ForcedVisibleByReload")); 
+                        player.sendMessage(ChatColor.DARK_AQUA + Messages.getString("VanishPlugin.ForcedVisibleByReload"));
                     }
                 }
             }
         }, 1);
 
-        this.spoutCraft.onPluginEnable(this.getConfig().getBoolean("hooks.spoutcraft", false)); 
+        this.spoutCraft.onPluginEnable(this.getConfig().getBoolean("hooks.spoutcraft", false));
 
         this.manager.startup();
 
-        boolean updateCheck = this.getConfig().getBoolean("checkupdates", true); 
+        boolean updateCheck = this.getConfig().getBoolean("checkupdates", true);
         if (firstTimeStarting) {
             updateCheck = false;
-            this.log(Messages.getString("VanishPlugin.FirstTimeOrWipedConfig")); 
-            this.log(Messages.getString("VanishPlugin.FutureStartupsSendData")); 
-            this.log(Messages.getString("VanishPlugin.CheckUpdateHateUsefulInfo")); 
-            this.log(Messages.getString("VanishPlugin.SettingCanDisable")); 
-            this.log(Messages.getString("VanishPlugin.PluginTrackingUtilization")); 
-            this.log(Messages.getString("VanishPlugin.NoUsageTracking")); 
+            this.log(Messages.getString("VanishPlugin.FirstTimeOrWipedConfig"));
+            this.log(Messages.getString("VanishPlugin.FutureStartupsSendData"));
+            this.log(Messages.getString("VanishPlugin.CheckUpdateHateUsefulInfo"));
+            this.log(Messages.getString("VanishPlugin.SettingCanDisable"));
+            this.log(Messages.getString("VanishPlugin.PluginTrackingUtilization"));
+            this.log(Messages.getString("VanishPlugin.NoUsageTracking"));
         }
 
         this.latestVersion = this.getDescription().getVersion();
@@ -264,7 +264,7 @@ public class VanishPlugin extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new ListenToYourHeart(this), this);
         this.getServer().getPluginManager().registerEvents(new ListenInventory(this), this);
 
-        this.log("v" + this.getDescription().getVersion() + " loaded.");  
+        this.log("v" + this.getDescription().getVersion() + " loaded.");
     }
 
     public void reload() {

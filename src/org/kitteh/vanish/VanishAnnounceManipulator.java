@@ -58,7 +58,7 @@ public class VanishAnnounceManipulator {
     public void fakeJoin(Player player, boolean force) {
         if (force || !(this.playerOnlineStatus.containsKey(player.getName()) && this.playerOnlineStatus.get(player.getName()))) {
             this.plugin.getServer().broadcastMessage(ChatColor.YELLOW + this.injectPlayerInformation(Settings.getFakeJoin(), player));
-            this.plugin.log(player.getName() + " faked joining");
+            this.plugin.log(player.getName() + Messages.getString("VanishAnnounceManipulator.fakedJoining")); 
             MetricsOverlord.fakejoin.increment();
             this.playerOnlineStatus.put(player.getName(), true);
         }
@@ -74,7 +74,7 @@ public class VanishAnnounceManipulator {
         if (force || !(this.playerOnlineStatus.containsKey(player.getName()) && !this.playerOnlineStatus.get(player.getName()))) {
 
             this.plugin.getServer().broadcastMessage(ChatColor.YELLOW + this.injectPlayerInformation(Settings.getFakeQuit(), player));
-            this.plugin.log(player.getName() + " faked quitting");
+            this.plugin.log(player.getName() + Messages.getString("VanishAnnounceManipulator.fakedQuitting")); 
             MetricsOverlord.fakequit.increment();
             this.playerOnlineStatus.put(player.getName(), false);
         }
@@ -110,6 +110,6 @@ public class VanishAnnounceManipulator {
     }
 
     private String injectPlayerInformation(String message, Player player) {
-        return message.replace("%p", player.getName()).replace("%d", player.getDisplayName()).replace("%up", this.plugin.getBPerms().getPrefix(player)).replace("%us", this.plugin.getBPerms().getSuffix(player));
+        return message.replace("%p", player.getName()).replace("%d", player.getDisplayName()).replace("%up", this.plugin.getBPerms().getPrefix(player)).replace("%us", this.plugin.getBPerms().getSuffix(player));   //$NON-NLS-3$ //$NON-NLS-4$
     }
 }

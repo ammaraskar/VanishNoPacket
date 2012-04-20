@@ -2,6 +2,7 @@ package org.kitteh.vanish.hooks;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.kitteh.vanish.Messages;
 import org.kitteh.vanish.VanishPlugin;
 
 import com.earth2me.essentials.IEssentials;
@@ -37,24 +38,24 @@ public class EssentialsHook {
     }
 
     public void unvanish(Player player) {
-        if (player.hasPermission("vanish.hooks.essentials.hide")) {
+        if (player.hasPermission("vanish.hooks.essentials.hide")) { 
             this.setHidden(player, false);
         }
     }
 
     public void vanish(Player player) {
-        if (player.hasPermission("vanish.hooks.essentials.hide")) {
+        if (player.hasPermission("vanish.hooks.essentials.hide")) { 
             this.setHidden(player, true);
         }
     }
 
     private void grabEssentials() {
-        final Plugin grab = this.plugin.getServer().getPluginManager().getPlugin("Essentials");
+        final Plugin grab = this.plugin.getServer().getPluginManager().getPlugin("Essentials"); 
         if (grab != null) {
             this.essentials = ((IEssentials) grab);
-            this.plugin.log("Now hooking into Essentials");
+            this.plugin.log(Messages.getString("EssentialsHook.HookingIntoEssentials")); 
         } else {
-            this.plugin.log("You wanted Essentials support. I could not find Essentials.");
+            this.plugin.log(Messages.getString("EssentialsHook.CantFindEssentials")); 
             this.essentials = null;
             this.enabled = false;
         }
