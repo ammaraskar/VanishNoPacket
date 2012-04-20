@@ -15,7 +15,7 @@ public class Debuggle {
 
     public static void log(String message) {
         if (Debuggle.instance != null) {
-            Debuggle.instance.logger.info("[VNP-DEBUG] " + message); 
+            Debuggle.instance.logger.info("[VNP-DEBUG] " + message);
         }
     }
 
@@ -24,6 +24,6 @@ public class Debuggle {
     }
 
     public Debuggle() {
-        this.logger = Logger.getLogger("Minecraft"); 
+        this.logger = Logger.getLogger("Minecraft");
     }
 }

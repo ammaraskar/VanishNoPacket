@@ -29,7 +29,7 @@ public class ListenPlayerJoin implements Listener {
      */
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerJoinEarly(PlayerJoinEvent event) {
-        event.getPlayer().setMetadata("vanished", new LazyMetadataValue(this.plugin, CacheStrategy.NEVER_CACHE, new VanishCheck(this.plugin.getManager(), event.getPlayer().getName()))); 
+        event.getPlayer().setMetadata("vanished", new LazyMetadataValue(this.plugin, CacheStrategy.NEVER_CACHE, new VanishCheck(this.plugin.getManager(), event.getPlayer().getName())));
         this.plugin.getManager().resetSeeing(event.getPlayer());
         if (VanishPerms.joinVanished(event.getPlayer())) {
             MetricsOverlord.joininvis.increment();
@@ -47,20 +47,20 @@ public class ListenPlayerJoin implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoinLate(PlayerJoinEvent event) {
         if (VanishPerms.joinVanished(event.getPlayer())) {
-            String add = ""; 
+            String add = "";
             if (VanishPerms.canVanish(event.getPlayer())) {
-                add = Messages.getString("ListenPlayerJoin.ToAppear"); 
+                add = Messages.getString("ListenPlayerJoin.ToAppear");
             }
-            event.getPlayer().sendMessage(ChatColor.DARK_AQUA + Messages.getString("ListenPlayerJoin.JoinedVanished") + add); 
-            this.plugin.messageStatusUpdate(ChatColor.DARK_AQUA + event.getPlayer().getName() + Messages.getString("ListenPlayerJoin.OtherPlayerJoinedVanished")); 
+            event.getPlayer().sendMessage(ChatColor.DARK_AQUA + Messages.getString("ListenPlayerJoin.JoinedVanished") + add);
+            this.plugin.messageStatusUpdate(ChatColor.DARK_AQUA + event.getPlayer().getName() + Messages.getString("ListenPlayerJoin.OtherPlayerJoinedVanished"));
         }
         if (VanishPerms.joinWithoutAnnounce(event.getPlayer())) {
             this.plugin.getManager().getAnnounceManipulator().addToDelayedAnnounce(event.getPlayer().getName());
             event.setJoinMessage(null);
         }
         if (VanishPerms.canReceiveAdminAlerts(event.getPlayer()) && this.plugin.versionDifference()) {
-            event.getPlayer().sendMessage(ChatColor.AQUA + Messages.getString("ListenPlayerJoin.CurrentVersion") + ChatColor.DARK_AQUA + this.plugin.getCurrentVersion() + ChatColor.AQUA + Messages.getString("ListenPlayerJoin.LatestVersion") + ChatColor.DARK_AQUA + this.plugin.getLatestKnownVersion());  
-            event.getPlayer().sendMessage(ChatColor.AQUA + Messages.getString("ListenPlayerJoin.CheckDBO") + ChatColor.DARK_AQUA + "http://dev.bukkit.org/server-mods/vanish/");  
+            event.getPlayer().sendMessage(ChatColor.AQUA + Messages.getString("ListenPlayerJoin.CurrentVersion") + ChatColor.DARK_AQUA + this.plugin.getCurrentVersion() + ChatColor.AQUA + Messages.getString("ListenPlayerJoin.LatestVersion") + ChatColor.DARK_AQUA + this.plugin.getLatestKnownVersion());
+            event.getPlayer().sendMessage(ChatColor.AQUA + Messages.getString("ListenPlayerJoin.CheckDBO") + ChatColor.DARK_AQUA + "http://dev.bukkit.org/server-mods/vanish/");
         }
     }
 }

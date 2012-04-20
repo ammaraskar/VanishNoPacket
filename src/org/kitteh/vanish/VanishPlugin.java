@@ -211,7 +211,7 @@ public class VanishPlugin extends JavaPlugin {
         boolean firstTimeStarting = false;
         if (!check.exists()) {
             firstTimeStarting = true;
-            Settings.deployDefaultConfig("config.yml"); 
+            Settings.deployDefaultConfig("config.yml");
             this.reloadConfig();
         }
 
@@ -222,7 +222,7 @@ public class VanishPlugin extends JavaPlugin {
 
         this.dynmapHook.onPluginEnable(this.getConfig().getBoolean("hooks.dynmap", false));
 
-        //Post-load stuff
+        // Post-load stuff
         this.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
             @Override
             public void run() {
@@ -256,7 +256,7 @@ public class VanishPlugin extends JavaPlugin {
             this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new UpdateCheck(this), 40, 432000);
         }
 
-        this.getCommand("vanish").setExecutor(new VanishCommand(this)); 
+        this.getCommand("vanish").setExecutor(new VanishCommand(this));
         this.getServer().getPluginManager().registerEvents(new ListenEntity(this), this);
         this.getServer().getPluginManager().registerEvents(new ListenPlayerMessages(this), this);
         this.getServer().getPluginManager().registerEvents(new ListenPlayerJoin(this), this);

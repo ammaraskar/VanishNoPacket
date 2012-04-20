@@ -19,19 +19,19 @@ public class JSONAPIHook {
         if (this.enabled) {
             final JSONAPI plug = this.grabJSONAPI();
             if (plug != null) {
-                plug.registerMethod("{   \"name\": \"isVanished\",   \"desc\": \"Checks if named player is vanished\",   \"call\": \"Plugins.VanishNoPacket.getManager().isVanished(0)\",  \"returns\": [\"boolean\", \"True if player is invisible. False if offline or visible.\"],   \"args\": [       [\"String\", \"Player's name\"]   ]}"); 
+                plug.registerMethod("{   \"name\": \"isVanished\",   \"desc\": \"Checks if named player is vanished\",   \"call\": \"Plugins.VanishNoPacket.getManager().isVanished(0)\",  \"returns\": [\"boolean\", \"True if player is invisible. False if offline or visible.\"],   \"args\": [       [\"String\", \"Player's name\"]   ]}");
             }
         }
     }
 
     private JSONAPI grabJSONAPI() {
-        final Plugin grab = this.plugin.getServer().getPluginManager().getPlugin("JSONAPI"); 
+        final Plugin grab = this.plugin.getServer().getPluginManager().getPlugin("JSONAPI");
         final JSONAPI toReturn;
         if (grab != null) {
             toReturn = ((JSONAPI) grab);
-            this.plugin.log(Messages.getString("JSONAPIHook.HookingIntoJSONAPI")); 
+            this.plugin.log(Messages.getString("JSONAPIHook.HookingIntoJSONAPI"));
         } else {
-            this.plugin.log(Messages.getString("JSONAPIHook.CantFindJSONAPI")); 
+            this.plugin.log(Messages.getString("JSONAPIHook.CantFindJSONAPI"));
             toReturn = null;
             this.enabled = false;
         }
