@@ -17,6 +17,7 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
 import org.getspout.spoutapi.gui.*;
 import org.getspout.spoutapi.player.SpoutPlayer;
+import org.kitteh.vanish.Messages;
 import org.kitteh.vanish.VanishPerms;
 import org.kitteh.vanish.VanishPlugin;
 
@@ -87,7 +88,7 @@ public class SpoutCraftHook extends Hook implements Listener {
         this.enabled = true;
         if (!this.plugin.getServer().getPluginManager().isPluginEnabled("Spout")) {
             this.enabled = false;
-            this.plugin.log("SpoutCraft not running but you wanted SpoutCraft features.");
+            this.plugin.log(Messages.getString("SpoutCraftHook.noSpoutCraft"));
             return;
         }
         this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
@@ -102,8 +103,8 @@ public class SpoutCraftHook extends Hook implements Listener {
         config.options().copyDefaults(true);
         final InputStream stream = this.plugin.getResource("spoutcraft.yml");
         if (stream == null) {
-            this.plugin.log("Defaults for spoutcraft.yml not loaded");
-            this.plugin.log("The /reload command is not fully supported by this plugin or Spout");
+            this.plugin.log(Messages.getString("SpoutCraftHook.defaultsNotLoaded"));
+            this.plugin.log(Messages.getString("SpoutCraftHook.reloadNotSupported"));
             this.enabled = false;
             return;
         }

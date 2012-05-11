@@ -192,20 +192,20 @@ public class VanishManager {
         this.toggleVanishQuiet(togglingPlayer);
         final String vanishingPlayerName = togglingPlayer.getName();
         String messageBit;
-        final String base = ChatColor.YELLOW + vanishingPlayerName + " has ";
+        final String base = ChatColor.YELLOW + vanishingPlayerName + " " + Messages.getString("VanishManager.has") + " ";
         if (this.isVanished(togglingPlayer)) {
             Debuggle.log("LoudVanishToggle Vanishing " + togglingPlayer.getName());
             this.plugin.hooksVanish(togglingPlayer);
-            messageBit = "vanished. Poof.";
+            messageBit = Messages.getString("VanishManager.vanishedPoof");
 
         } else {
             Debuggle.log("LoudVanishToggle Revealing " + togglingPlayer.getName());
             this.plugin.hooksUnvanish(togglingPlayer);
-            messageBit = "become visible.";
+            messageBit = Messages.getString("VanishManager.becameVisible");
             this.announceManipulator.vanishToggled(togglingPlayer);
         }
         final String message = base + messageBit;
-        togglingPlayer.sendMessage(ChatColor.DARK_AQUA + "You have " + messageBit);
+        togglingPlayer.sendMessage(ChatColor.DARK_AQUA + Messages.getString("VanishManager.youHave") + messageBit);
         this.plugin.messageStatusUpdate(message, togglingPlayer);
     }
 
@@ -250,7 +250,7 @@ public class VanishManager {
             this.vanishedPlayerNames.add(vanishingPlayerName);
             cplr.getHandle().netServerHandler.sendPacket(new Packet41MobEffect(cplr.getEntityId(), new MobEffect(MobEffectList.INVISIBILITY.getId(), 0, 0)));
             MetricsOverlord.vanish.increment();
-            this.plugin.log(vanishingPlayerName + " disappeared.");
+            this.plugin.log(vanishingPlayerName + " " + Messages.getString("VanishManager.disappeared"));
         } else {
             Debuggle.log("It's visible time! " + vanishingPlayer.getName());
             this.resetSleepingIgnored(vanishingPlayer);
@@ -258,7 +258,7 @@ public class VanishManager {
             this.removeVanished(vanishingPlayerName);
             cplr.getHandle().netServerHandler.sendPacket(new Packet42RemoveMobEffect(cplr.getEntityId(), new MobEffect(MobEffectList.INVISIBILITY.getId(), 0, 0)));
             MetricsOverlord.unvanish.increment();
-            this.plugin.log(vanishingPlayerName + " reappeared.");
+            this.plugin.log(vanishingPlayerName + " " + Messages.getString("VanishManager.reappeared"));
         }
         if (effects) {
             if (VanishPerms.canSmoke(vanishingPlayer)) {

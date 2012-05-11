@@ -29,7 +29,7 @@ public class VanishPlugin extends JavaPlugin {
         @Override
         public void run() {
             try {
-                final String address = "http://updates.kitteh.org/VanishNoPacket/version.php?bukkit=" + this.plugin.getServer().getVersion() + "&version=" + this.plugin.getDescription().getVersion() + "&port=" + this.plugin.getServer().getPort();
+                final String address = "http://updates.kitteh.org/VanishNoPacket/version.php?bukkit=" + this.plugin.getServer().getVersion() + "&version=" + this.plugin.getDescription().getVersion() + "&port=" + this.plugin.getServer().getPort(); //$NON-NLS-3$
                 final URL url = new URL(address.replace(" ", "%20"));
                 final URLConnection connection = url.openConnection();
                 connection.setConnectTimeout(8000);
@@ -40,8 +40,8 @@ public class VanishPlugin extends JavaPlugin {
                 if ((version = bufferedReader.readLine()) != null) {
                     this.plugin.latestVersion = version;
                     if (!this.plugin.getDescription().getVersion().equals(version)) {
-                        this.plugin.log("Found a different version available: " + version);
-                        this.plugin.log("Check http://dev.bukkit.org/server-mods/vanish/");
+                        this.plugin.log(Messages.getString("VanishPlugin.differentVersion") + " " + version);
+                        this.plugin.log(Messages.getString("VanishPlugin.checkURL") + " http://dev.bukkit.org/server-mods/vanish/");
                         this.plugin.versionDiff = true;
                     }
                     bufferedReader.close();
@@ -53,7 +53,7 @@ public class VanishPlugin extends JavaPlugin {
                 }
             } catch (final Exception e) {
             }
-            this.plugin.log("Error: Could not check if plugin was up to date. Will try later");
+            this.plugin.log(Messages.getString("VanishPlugin.couldNotCheckUpdate"));
         }
 
     }
@@ -218,7 +218,7 @@ public class VanishPlugin extends JavaPlugin {
         this.manager.onPluginDisable();
         this.getServer().getScheduler().cancelTasks(this);
         Debuggle.nah();
-        this.log("v" + this.getDescription().getVersion() + " unloaded.");
+        this.log("v" + this.getDescription().getVersion() + " " + Messages.getString("VanishPlugin.unloaded"));
     }
 
     @Override
@@ -255,7 +255,7 @@ public class VanishPlugin extends JavaPlugin {
                 }
                 for (final Player player : VanishPlugin.this.getServer().getOnlinePlayers()) {
                     if ((player != null) && VanishPerms.canVanish(player)) {
-                        player.sendMessage(ChatColor.DARK_AQUA + "[Vanish] You have been forced visible by a reload.");
+                        player.sendMessage(ChatColor.DARK_AQUA + Messages.getString("VanishPlugin.forcedVisible"));
                     }
                 }
             }
@@ -270,19 +270,19 @@ public class VanishPlugin extends JavaPlugin {
         boolean updateCheck = this.getConfig().getBoolean("checkupdates", true);
         if (firstTimeStarting) {
             updateCheck = false;
-            this.log("This is your first time (or you wiped your config).");
-            this.log("In future startups, VanishNoPacket will send usage data");
-            this.log("and check for updated versions. If you hate useful info,");
-            this.log("The setting can be disabled in the config file.");
-            this.log("Note that this plugin also utilizes PluginMetrics with usage tracking");
-            this.log("If you do not want usage tracking (paranoid) disable in that config");
+            this.log(Messages.getString("VanishPlugin.firstTime1"));
+            this.log(Messages.getString("VanishPlugin.firstTime2"));
+            this.log(Messages.getString("VanishPlugin.firstTime3"));
+            this.log(Messages.getString("VanishPlugin.firstTime4"));
+            this.log(Messages.getString("VanishPlugin.firstTime5"));
+            this.log(Messages.getString("VanishPlugin.firstTime6"));
         }
 
         this.latestVersion = this.getDescription().getVersion();
 
         if (updateCheck) {
             if (this.getDescription().getVersion().contains("SNAPSHOT")) {
-                this.log("You are using a SNAPSHOT build. Update check disabled");
+                this.log(Messages.getString("VanishPlugin.usingSnapshot"));
             } else {
                 this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new UpdateCheck(this), 40, 432000);
             }
@@ -296,7 +296,7 @@ public class VanishPlugin extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new ListenToYourHeart(this), this);
         this.getServer().getPluginManager().registerEvents(new ListenInventory(this), this);
 
-        this.log("v" + this.getDescription().getVersion() + " loaded.");
+        this.log("v" + this.getDescription().getVersion() + " " + Messages.getString("VanishPlugin.loaded"));
     }
 
     /**
